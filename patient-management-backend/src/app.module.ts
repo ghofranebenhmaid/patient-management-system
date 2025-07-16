@@ -12,11 +12,11 @@ import { PatientsModule } from './patients/patients.module';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: process.env.DB_USERNAME || 'ghofranebenhmaid', // Default to your macOS username
-      password: process.env.DB_PASSWORD || '', // No password by default on macOS
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD || '',
       database: 'patient_db',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // Use only for development, not in production
+      synchronize: true,
     }),
     AuthModule,
     UsersModule,
