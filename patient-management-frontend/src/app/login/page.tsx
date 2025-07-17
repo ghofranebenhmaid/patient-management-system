@@ -49,12 +49,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <h2 className="mt-6 text-3xl font-bold text-gray-900">
-            Patient Management System
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">Sign in to your account</p>
-        </div>
 
         <Card className="mt-8">
           <CardHeader className="space-y-1">
@@ -65,7 +59,7 @@ export default function LoginPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {error && <Alert variant="destructive">{error}</Alert>}
+             
 
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -94,6 +88,7 @@ export default function LoginPage() {
                   className="w-full"
                 />
               </div>
+              {error && <Alert className="w-full inline-block p-0  border-transparent" variant="destructive">{error}</Alert>}
 
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign in"}

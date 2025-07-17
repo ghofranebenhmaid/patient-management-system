@@ -22,7 +22,7 @@ import {
 import { Patient, patientService } from "@/lib/api";
 import { authService } from "@/lib/auth";
 import { useUser } from "@/contexts/UserContext";
-import { FilePenLineIcon, RabbitIcon, Trash2Icon } from "lucide-react";
+import { FilePenLineIcon, LogOutIcon, PlusIcon, RabbitIcon, Trash2Icon } from "lucide-react";
 
 export default function PatientsPage() {
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -169,15 +169,11 @@ export default function PatientsPage() {
               )}
             </div>
             <div className="flex items-center space-x-3">
-              {isAdmin && (
-                <Button onClick={() => router.push("/patients/new")}>
-                  Add Patient
-                </Button>
-              )}
               <Button variant="outline" onClick={() => router.push("/dashboard")}>
                 Dashboard
               </Button>
               <Button variant="outline" onClick={handleLogout}>
+                <LogOutIcon className="w-4 h-4 " />
                 Logout
               </Button>
             </div>
@@ -186,7 +182,16 @@ export default function PatientsPage() {
       </header>
 
       {/* Main Content */}
+     
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex items-center justify-end mb-4">
+      {isAdmin && (
+                <Button onClick={() => router.push("/patients/new")}>
+                  <PlusIcon className="w-4 h-4 " />
+                  Add Patient
+                </Button>
+              )}
+      </div>
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
             <p className="text-red-800">{error}</p>
@@ -207,7 +212,7 @@ export default function PatientsPage() {
             <h2 className="text-lg font-medium text-gray-900">All Patients</h2>
           </div>
           
-          <Table>
+          <Table className="scrollbar-none overflow-x-auto">
             <TableHeader>
               <TableRow>
                 <TableHead 
@@ -239,7 +244,7 @@ export default function PatientsPage() {
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="text-sm ">
               {paginatedPatients.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={7} className="text-center py-8">
