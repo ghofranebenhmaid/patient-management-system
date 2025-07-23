@@ -22,6 +22,7 @@ import {
 import { Patient, patientService } from "@/lib/api";
 import { authService } from "@/lib/auth";
 import { useUser } from "@/contexts/UserContext";
+import DashboardLayout from "@/components/DashboardLayout";
 import { FilePenLineIcon, LogOutIcon, PlusIcon, RabbitIcon, Trash2Icon } from "lucide-react";
 
 export default function PatientsPage() {
@@ -154,13 +155,13 @@ export default function PatientsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+    <DashboardLayout>
+      <div className="p-6">
+              {/* Page Header */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <RabbitIcon className="size-9" /> 
+              <h1 className="text-3xl font-bold text-gray-900">Patients</h1>
               <Badge variant="secondary">{patients.length} patients</Badge>
               {user && (
                 <Badge variant={isAdmin ? "default" : "outline"}>
@@ -168,22 +169,10 @@ export default function PatientsPage() {
                 </Badge>
               )}
             </div>
-            <div className="flex items-center space-x-3">
-              <Button variant="outline" onClick={() => router.push("/dashboard")}>
-                Dashboard
-              </Button>
-              <Button variant="outline" onClick={handleLogout}>
-                <LogOutIcon className="w-4 h-4 " />
-                Logout
-              </Button>
-            </div>
           </div>
         </div>
-      </header>
 
-      {/* Main Content */}
-     
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Main Content */}
       <div className="flex items-center justify-end mb-4">
       {isAdmin && (
                 <Button onClick={() => router.push("/patients/new")}>
@@ -280,11 +269,12 @@ export default function PatientsPage() {
                               variant="outline"
                               size="sm"
                               onClick={() => router.push(`/patients/${patient.id}/edit`)}
+                              className="bg-blue-100 size-7 text-blue-600 hover:bg-blue-200 hover:text-blue-800"
                             >
-                              <FilePenLineIcon className="w-4 h-4" />
+                              <FilePenLineIcon className="size-3" />
                             </Button>
                             <Button
-                              className="bg-red-400 text-red-600 hover:bg-red-500 hover:text-red-800"
+                              className="bg-red-200 size-7 text-red-600 hover:bg-red-300 hover:text-red-800"
                               variant="destructive"
                               size="sm"
                               onClick={() => {
@@ -292,7 +282,7 @@ export default function PatientsPage() {
                                 setDeleteModalOpen(true);
                               }}
                             >
-                              <Trash2Icon className="w-4 h-4" />
+                              <Trash2Icon className="size-3" />
                             </Button>
                           </>
                         )}
@@ -379,6 +369,7 @@ export default function PatientsPage() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </DashboardLayout>
+
   );
 } 

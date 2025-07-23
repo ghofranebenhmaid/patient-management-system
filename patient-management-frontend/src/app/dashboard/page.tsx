@@ -1,87 +1,181 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { authService } from "@/lib/auth";
-import { RabbitIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/contexts/UserContext";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Users, Calendar, Activity, FileText, Plus, TrendingUp } from "lucide-react";
+import DashboardLayout from "@/components/DashboardLayout";
 
-export default function DashboardPage() {
+const stats = [
+  {
+    name: "Total Patients",
+    value: "1,234",
+    change: "+12%",
+    changeType: "positive" as "positive" | "negative" | "neutral",
+    icon: Users,
+  },
+  {
+    name: "Appointments Today",
+    value: "24",
+    change: "+3",
+    changeType: "positive" as "positive" | "negative" | "neutral",
+    icon: Calendar,
+  },
+  {
+    name: "Active Records",
+    value: "892",
+    change: "+8%",
+    changeType: "positive" as "positive" | "negative" | "neutral",
+    icon: FileText,
+  },
+  {
+    name: "System Health",
+    value: "98.5%",
+    change: "0%",
+    changeType: "neutral" as "positive" | "negative" | "neutral",
+    icon: Activity,
+  },
+];
+
+const quickActions = [
+  {
+    title: "Add New Patient",
+    description: "Register a new patient in the system",
+    href: "/patients/new",
+    icon: Users,
+    color: "bg-blue-500",
+  },
+  {
+    title: "Schedule Appointment",
+    description: "Book a new appointment",
+    href: "/appointments/new",
+    icon: Calendar,
+    color: "bg-green-500",
+  },
+  {
+    title: "View Reports",
+    description: "Access analytics and reports",
+    href: "/analytics",
+    icon: TrendingUp,
+    color: "bg-purple-500",
+  },
+  {
+    title: "Medical Records",
+    description: "Access patient records",
+    href: "/records",
+    icon: FileText,
+    color: "bg-orange-500",
+  },
+];
+
+function DashboardContent() {
   const router = useRouter();
-
-  const handleLogout = () => {
-    authService.logout();
-    router.push("/");
-  };
+  const { user } = useUser();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header with logout button */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Welcome back, {user ? `${user.firstName}` : "Healthcare Provider"}
+        </h1>
+        <p className="text-gray-600 mt-1">
+          {`Here's what's happening in your healthcare system today.`}
+        </p>
+      </div>
 
-            <RabbitIcon className="size-9" /> 
-            <Button 
-              variant="outline" 
-              onClick={handleLogout}
-              className="flex items-center gap-2"
-            >
-              <svg 
-                className="w-4 h-4" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" 
-                />
-              </svg>
-              Logout
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      {/* Main content */}
-      <div className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-           
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                 <button  
-                   onClick={() => router.push("/patients")}
-                   className="border cursor-pointer rounded-lg p-6 hover:shadow-md transition-shadow text-center w-full"
-                 >
-                   <div className="size-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                     <svg className="size-9 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                     </svg>
-                   </div>
-                   <h4 className="font-medium text-gray-900">Patient Management</h4>
-                   <p className="text-sm text-gray-600 mt-2">
-                     Manage patient information
-                   </p>
-                 </button>
-                <div className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                  <div className=" size-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <svg className=" size-9 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h6m-6 0l-.5 5.5A1.5 1.5 0 0010 14h4a1.5 1.5 0 001.5-1.5L15 7H9z" />
-                    </svg>
-                  </div>
-                  <h4 className="font-medium text-gray-900">Appointments</h4>
-                  <p className="text-sm text-gray-600 mt-2">
-                    Schedule and manage appointments
-                  </p>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat) => (
+          <Card key={stat.name}>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">{stat.name}</p>
+                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
                 </div>
+                <div className="h-12 w-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                  <stat.icon className="h-6 w-6 text-blue-600" />
+                </div>
+              </div>
+              <div className="mt-4 flex items-center">
+                <span
+                  className={`text-sm font-medium ${
+                    stat.changeType === "positive"
+                      ? "text-green-600"
+                      : stat.changeType === "negative"
+                      ? "text-red-600"
+                      : "text-gray-600"
+                  }`}
+                >
+                  {stat.change}
+                </span>
+                <span className="text-sm text-gray-600 ml-1">from last month</span>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Quick Actions */}
+      <div>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {quickActions.map((action) => (
+            <Card key={action.title} className="cursor-pointer hover:shadow-md transition-shadow">
+              <CardContent className="p-6" onClick={() => router.push(action.href)}>
+                <div className={`h-12 w-12 ${action.color} rounded-lg flex items-center justify-center mb-4`}>
+                  <action.icon className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">{action.title}</h3>
+                <p className="text-sm text-gray-600">{action.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Activity</CardTitle>
+          <CardDescription>Latest updates from your healthcare system</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-4">
+              <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-900">New patient registered</p>
+                <p className="text-xs text-gray-500">2 minutes ago</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="h-2 w-2 bg-blue-500 rounded-full"></div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-900">Appointment scheduled</p>
+                <p className="text-xs text-gray-500">15 minutes ago</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="h-2 w-2 bg-purple-500 rounded-full"></div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-900">Medical record updated</p>
+                <p className="text-xs text-gray-500">1 hour ago</p>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <DashboardLayout>
+      <DashboardContent />
+    </DashboardLayout>
   );
 } 
